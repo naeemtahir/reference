@@ -1,0 +1,24 @@
+#!/bin/bash
+
+DATA_DIR=.
+
+if [ "$#" -eq 1 ]; then
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    OPEN=open
+  elif [[ "$OSTYPE" == "linux"* ]] && [[ $DISPLAY ]]; then
+    OPEN=xdg-open
+  else
+    OPEN=less
+  fi
+
+  $OPEN $DATA_DIR/$1.md
+else
+  script_name=`basename "$0"`
+  topics=`ls *.md | sed 's/\.md//' | sed 's/Readme//' | paste -s -d\|`
+
+  echo "Usage: $script_name <topic>"
+  echo ""
+  echo "Where topic is one of [$topics]"
+  exit 1
+fi
+
