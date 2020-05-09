@@ -36,6 +36,7 @@ Clear screen, reprinting the current line at the top: ```C-l``` (same as ```clea
   ```$@``` | List of arguments, when used within double quotes each parameter expands to a separate word. That is, ```"$@"``` is equivalent to ```"$1"``` ```"$2"```  
   ```$*``` | List of arguments, when used within double quotes it expands to a single word with the value of each parameter separated by the first character of the ```IFS``` special variable. That is, ```"$*"``` is equivalent to ```"$1c$2c..."```, where ```c``` is the first character of the value of the ```IFS``` variable. If ```IFS``` is unset, the parameters are separated by spaces. If ```IFS``` is ```null```, the parameters are joined without intervening separators.  
   ```$?``` | Exit code/return code from last program/function call  
+  ```$!``` | Process id of the most recently executed background process  
   ```$$``` | Process id of script  
   ```$-``` | Values of various shell's flags. See ```bash``` man pages for details  
   ```!!``` | Last shell command, e.g., re-run last 'Permission Denied` command with sudo: ```sudo !!```
