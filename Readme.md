@@ -1,4 +1,4 @@
 ## My Quick Reference Notes
 
-How to install: ```./install.sh```
+Collection of notes on various topics. Run ```ref <topic>``` or open ```<topic>.md``` directly.
 
