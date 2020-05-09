@@ -1,46 +1,77 @@
 # Bash
 
-- [Get Script Path](#get-script-path)
-- [Process file line by line](#process-file-line-by-line)
-- [POSIX Style Command Line](#posix-style-command-line)
+- [Command line editing](#command-line-editing)
+- [Globbing](#globbing)
+- [Special variabes](#special-variables)
+- [Useful Snippets](#useful-snippets)
+   - [Colorize Output](#colorize-output)
+   - [Match RegEx](#match-regex)
+   - [POSIX Style Command Line Processing](#posix-style-command-line-processing)
+   - [Process lines in a file](#process-lines-in-a-file)
+   - [Process list and dictionary](#process-list-and-dictionary)
+   - [Prompt for yes-no](#prompt-for-yes-no)
+   - [Script name and path](#script-name-and-path)
 
-## Get Script Path
+## Command line editing
+
+Jump to start/end of line: ```C-a, C-e```  
+Jump forward/backward a word: ```M-f, M-b```  
+Delete from current position to start/end of line: ```C-u, C-k```  
+Delete word before/after: ```M-Del|C-w, M-d```  
+Clear screen, reprinting the current line at the top: ```C-l``` (same as ```clear``` command)  
+
+## Globbing
+
+```?```    matches single character   
+```*```    matches multiple characters   
+```{}```   matches list (e.g., ```convert image.{png,jpg}``` expands to ```convert image.png image.jpg```)   
+
+## Special Variables
+
+  Variable | Description
+  -------- | -----------
+  ```$0``` | Name of script
+  ```$n``` | Positional arguments of script (or function) (where ```n>=1```)
+  ```$#``` | Number of arguments
+  ```$@``` | List of arguments, when used within double quotes each parameter expands to a separate word. That is, ```"$@"``` is equivalent to ```"$1"``` ```"$2"```  
+  ```$*``` | List of arguments, when used within double quotes it expands to a single word with the value of each parameter separated by the first character of the ```IFS``` special variable. That is, ```"$*"``` is equivalent to ```"$1c$2c..."```, where ```c``` is the first character of the value of the ```IFS``` variable. If ```IFS``` is unset, the parameters are separated by spaces. If ```IFS``` is ```null```, the parameters are joined without intervening separators.  
+  ```$?``` | Exit code/return code from last program/function call  
+  ```$$``` | Process id of script  
+  ```$-``` | Values of various shell's flags. See ```bash``` man pages for details  
+  ```!!``` | Last shell command, e.g., re-run last 'Permission Denied` command with sudo: ```sudo !!```
+  ```$_``` | Last argument of last command, e.g., ```$ mkdir /media/mydir/```, ```$ cd $_```
+  ```IFS```| Internal Field Separator - is a special shell variable that is used for word splitting. It is commonly used with read command, parameter expansions and command substitution. The default value is ```<space><tab><newline>```, you can change its value as per your requirments.
+
+## Useful Snippets
+
+### Colorize Output
+Ref: https://misc.flogisoft.com/bash/tip_colors_and_formatting  
 
 ```bash
-#!/bin/sh
+RED='\e[31m'
+GREEN='\e[32m'
+YELLOW='\e[33m'
+NO_COLOR='\e[0m'
+LIGHT_CYAN='\e[96m'
 
-script_name=`basename "$0"`
-script_dir="$( cd "$( dirname "$0" )" && pwd )"
-
-echo "script_name=$script_name"
-echo "script_dir=$script_dir"
+echo -e "${RED}Environment variable 'MYVAR' is not set.${NO_COLOR}"
 ```
 
-## Process file line by line
-
+### Match RegEx
 ```bash
-#!/bin/sh
+re='^[0-9]+$'
 
-process() {
-    local arg=$*
-
-    # anything you want to do with line goes here
-    echo $arg 
-}
-
-if [ "$#" -eq 1 ]; then
-    while IFS= read -r line; 
-    do
-        process $line
-    done < $1	
+if [ "$#" -ge 1 ] && [[ $1 =~ $re ]]; then
+   
 else
-    script_name=`basename "$0"`
-    echo "Usage: $script_name <file>"
-    exit 1
+   script_name=`basename "$0"`
+   echo "  Usage: $script_name </path/to/dir> [options]"
+   exit 1
 fi
 ```
 
-## POSIX Style Command Line
+### POSIX Style Command Line Processing
+Ref: https://github.com/apache/flink/blob/release-1.10/flink-container/docker/build.sh
 
 ```bash
 #!/bin/sh
@@ -107,4 +138,82 @@ key="$1"
   esac
   shift
 done
+```
+
+### Process lines in a file
+```bash
+#!/bin/sh
+
+process() {
+    local arg=$*
+
+    # anything you want to do with line goes here
+    echo $arg 
+}
+
+if [ "$#" -eq 1 ]; then
+    while IFS= read -r line; 
+    do
+        process $line
+    done < $1	
+else
+    script_name=`basename "$0"`
+    echo "Usage: $script_name <file>"
+    exit 1
+fi
+```
+
+### Process list and dictionary
+```bash
+declare -a hist_files=("$HOME/.bash_history" "$HOME/.python_history" "$HOME/.lesshst" "$HOME/.local/share/recently-used.xbel")                                                                                
+
+for i in "${hist_files[@]}"
+do
+   touch $i && cat /dev/null > $i && chmod 400 $i
+done
+```
+
+```bash
+declare -A lookuptbl=( ["key1"]="val1" ["key2"]="val2")
+
+v=${lookuptbl['key1']}
+k=lookuptbl['key1']='value5'
+vlist="${lookuptbl[@]}"
+klist="${!lookuptbl[@]}"
+
+for k in "${!lookuptbl[@]}"
+do
+   echo "${lookuptbl[$k]}"
+done
+```
+
+### Prompt for yes-no
+```bash
+prompt() {
+    local msg="$*"
+
+    read -p "$msg" -n 1 -r
+    if [[ ! $REPLY =~ ^[Yy]$ ]]
+    then
+        echo ""
+        # [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
+        return 1
+    fi
+
+    echo ""
+    return 0
+}
+
+prompt "Delete directory... (y/n)? "
+if [ "$?" -eq "0" ]; then
+    rmdir mydir
+else
+    echo "Skipping 'STEP 1/6: Deleting directory'"  
+fi
+```
+
+### Script name and path
+```bash
+script_name=`basename "$0"`
+script_dir="$( cd "$( dirname "$0" )" && pwd )"
 ```
