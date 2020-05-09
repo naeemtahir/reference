@@ -5,10 +5,9 @@
 - [Editing](#editing)
 - [Search/Replace](#searchreplace)
 - [Files](#files)
-- [Editor Commands](#editor-commands)
+- [Windows/Tabs](#windowstabs)
 - [Counts and Modifiers](#counts-and-modifiers)
-- [Windows](#windows)
-- [Tabs](#tabs)
+- [Editor Commands](#editor-commands)
 
 ## Movement
 
@@ -24,6 +23,18 @@ Jump forward/back before character: ```t<c>/T<c>```, use ```,``` to jump to next
 Top, Middle, Bottom of screen: ```H, M, L```  
 Beginning/end of File: ```gg, G```  
 Scroll up/down: ```C-u, C-d```  
+
+Set mark at current cursor location: ```m<key>```  
+Jump to line of mark (first non-blank character in line): ```'<key>```  
+Jump to position (line and column) of mark: ``` `a ```   
+Navigate between marks: ```]'```, ```]` ```, ```['```, ``` [` ```  
+Special Marks:  
+``` `. ``` Jump to position where last change occurred in current buffer  
+``` `" ``` Jump to position where last exited current buffer  
+``` `0 ``` Jump to position in last file edited (when exited Vim)  
+``` `1 ``` Like ``` `0 ``` but the previous file (also ``` `2 ``` etc)  
+``` '' ``` Jump back (to line in current buffer where jumped from)  
+``` `` ``` Jump back (to position in current buffer where jumped from)  
 
 ## Selection (aka Visual Mode)
 
@@ -46,7 +57,7 @@ Delete current line: ```dd```
 Undo last text change/all changes on line: ```u/U```  
 Redo: ```C-r```  
 
-Copy: ```y<motion>``` (e.g., ```yw``` copy word, ```y$``` copy to the end of line), ```yy``` copies whole line  
+Copy/cut: ```y<motion>``` (e.g., ```yw``` copy word, ```y$``` copy to the end of line), ```yy``` copies whole line. Replace ```y``` with ```d``` for cutting.    
 Paste after/before position/line: ```p, P```
 
 Toggle case: ```~```  
@@ -61,21 +72,27 @@ Replace all/confirm in all lines: ```:%s/string/replacement/[g,c]```
 
 ## Files
 
-Write file: ```:w [filename]```, current file if no name given  
+Save file (as): ```:w [filename]```, current file if no name given  
 Read file after line: ```:r <filename>```  
 Read program output: ```:r !<program>```  
 Edit file: ```:e <filename>```  
 Next/previous file: ```:n, :p```  
+Close file: ```:bd```  
 
-## Editor Commands
+## Windows/Tabs
 
-Exit saving changes: ```:x```  
-Exit (unless changes): ```:q```  
-Exit discarding change: ```!q```  
+New empty window: ```<C-w>n :new```  
+Split window horizontally/vertically (editing current buffer, if you want to open a different file specify it as parameters to ```:split :vsplit``` command): ```<C-w>s,v``` or ```:split,:vsplit```  
+Close current/other window(s): ```<C-w>c,o```  
+Go to next/previous window: ```<C-w>w,p```   
+Go to window left/down/above/right: ```<C-w> <movement>```  
 
-Show line numbers: ```:set number```  
-Turn on/off Hex mode: ```:%!xxd```, ```:%!xxd -r```  
-
+New empty Tab: ```:tabnew```  
+Open file in new tab: ```:tabedit <filename>```  
+Close current tab: ```:tabc```  
+Close all tabs except current: ```:tabo```  
+Next/previous tab: ```:tabn/:tabp``` 
+ 
 ## Counts and Modifiers
 
 You can combine nouns and verbs with a count, which will perform a given action a number of times. e.g., ```3w``` move 3 words forward, ```5j``` move 5 lines down, ```7dw``` delete 7 words.  
@@ -86,28 +103,11 @@ You can use modifiers to change the meaning of a noun. Some modifiers are ```i``
        ```ci[``` change the contents inside the current pair of square brackets  
        ```da'``` delete a single-quoted string, including the surrounding single quotes  
 
-## Windows
+## Editor Commands
 
-Split window horizontally/vertically: ```:split/vsplit [filename]```, if no filename specified it will open current file  
+Exit saving changes: ```:x```  
+Exit (unless changes): ```:q```  
+Exit discarding change: ```!q```  
 
-Once you have multiple windows open, there are many window commands available all starting with the ```<C-w>``` key:  
-
-```<C-w>n```- :new horizontal split (editing a new empty buffer)  
-```<C-w>s``` - :split window horizontally (editing current buffer)  
-```<C-w>v``` - :vsplit window vertically (editing current buffer)  
-```<C-w>c``` - :close window  
-```<C-w>o``` - close all windows, leaving :only the current window open  
-```<C-w>w``` - go to next window  
-```<C-w>p``` - go to previous window  
-```<C-w><Up>``` - go to window above  
-```<C-w><Down>``` - go to window below  
-```<C-w><Left>``` - go to window on left  
-```<C-w><Right>``` - go to window on right  
-
-## Tabs
-
-New Tab: ```:tabnew```  
-Open file in new tab: ```:tabedit <filename>```  
-Close current tab: ```:tabc```  
-Close all tabs except current: ```:tabo```  
-Next/previous tab: ```:tabn/:tabp```  
+Show line numbers: ```:set number```  
+Turn on/off Hex mode: ```:%!xxd```, ```:%!xxd -r```  
