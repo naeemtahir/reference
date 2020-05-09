@@ -6,7 +6,7 @@ Default command key is ```Ctrl-b``` (represented as ```C-``` in follwing guide)
 - [Windows](#windows)
 - [Panes](#panes)
 - [Scrolling](#scrolling)
-- [Copy/Paste](#copypaste)
+- [Copy,Paste,Search](#copypastesearch)
 - [Mouse Support](#mouse-support)
 - [Other Useful Commands](#other-useful-commands)
 - [Customization](#customization)
@@ -46,7 +46,7 @@ Default command key is ```Ctrl-b``` (represented as ```C-``` in follwing guide)
 
 Scroll in window/pane: ```C-[```, press ```q``` or ```ESC``` to exit scroll mode
 
-## Copy/Paste/Search
+## Copy,Paste,Search
 
 - To copy enter copy mode ```C-[```, hit ```Ctrl-Space``` and start highlighting text with arrow keys (hit ```Ctrl-Space``` to cancel), press ```Alt-w``` to copy text into tmux clipboard
 
