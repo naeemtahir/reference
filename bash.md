@@ -193,16 +193,20 @@ done
 prompt() {
     local msg="$*"
 
-    read -p "$msg" -n 1 -r
-    if [[ ! $REPLY =~ ^[Yy]$ ]]
-    then
-        echo ""
-        # [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
-        return 1
-    fi
+    yesno="null"
 
-    echo ""
-    return 0
+    shopt -s nocasematch
+    while [[ ! ${yesno} =~ ^([yn]|yes|no)?$ ]]; do
+       read -r -p "$msg" yesno
+    done
+    shopt -u nocasematch
+
+    if [[ $yesno =~ ^[Yy].* ]]; then
+       return 0
+    else
+       # [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
+       return 1
+    fi
 }
 
 prompt "Delete directory... (y/n)? "
