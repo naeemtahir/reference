@@ -1,6 +1,7 @@
 # Bash
 
 - [Command line editing](#command-line-editing)
+- [History](#history)
 - [Globbing](#globbing)
 - [Special variabes](#special-variables)
 - [Useful Snippets](#useful-snippets)
@@ -14,11 +15,19 @@
 
 ## Command line editing
 
-Jump to start/end of line: ```C-a, C-e```  
-Jump forward/backward a word: ```M-f, M-b```  
+Move to start/end of line: ```C-a, C-e```  
+Move forward/backward a character: ```C-f, C-b```  
+Move forward/backward a word: ```A-f, A-b```  
+Delete the character under the cursor: ```C-d```  
 Delete from current position to start/end of line: ```C-u, C-k```  
-Delete word before/after: ```M-Del|C-w, M-d```  
+Delete word before/after: ```C-w, A-d```  
 Clear screen, reprinting the current line at the top: ```C-l``` (same as ```clear``` command)  
+
+## History
+
+Fetch the previous/next command from the history list: ```C-p, C-n```  
+Search backward/forward through history for a given string: ```A-p, A-n```  
+Search backward/forward through history: ```C-r, C-s```  
 
 ## Globbing
 
