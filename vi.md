@@ -40,7 +40,7 @@ Special Marks:
 
 Start selection by character: ```v```  
 Start selection by line: ```V```  
-Start selection by Block: ```C-v``  
+Start selection by Block: ```C-v```  
 
 ## Editing
 
