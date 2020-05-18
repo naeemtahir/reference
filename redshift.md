@@ -3,6 +3,10 @@
 - [Admin Queries](#admin-queries)
 - [Diagnostic Queries (RedShift Specific)](#diagnostic-queries-redshift-specific)
 
+## Adhoc Queries
+
+```psql -U <username> -h <db-host> -p <db-port> -d <db-name> -c <Query>```
+
 ## Admin Queries
 
 ### List Schemas
