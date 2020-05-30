@@ -8,6 +8,7 @@
 - [Windows/Tabs](#windowstabs)
 - [Counts and Modifiers](#counts-and-modifiers)
 - [Editor Commands](#editor-commands)
+- [Editor Command Completion](#editor-command-completion)
 
 ## Movement
 
@@ -19,11 +20,13 @@ Beginning/End of Paragraph:  ```{,}```
 Go to line number: ```:<n>, <n>G```  
 Jump forward/back to character: ```f<c>/F<c>```, use ```;``` to jump to next match  
 Jump forward/back before character: ```t<c>/T<c>```, use ```,``` to jump to next match  
+Jump to matching parenthesis: Press ```%``` on any of ```[,{,(,),},]```   
 
 Top, Middle, Bottom of screen: ```H, M, L```  
 Beginning/end of File: ```gg, G```  
 Scroll up/down: ```C-u, C-d```  
 
+Jump back to the previous/next location (like a browser back/forward buttons): ```Ctrl-O```, ```Ctrl-I```   
 Set mark at current cursor location: ```m<key>```  
 Jump to line of mark (first non-blank character in line): ```'<key>```  
 Jump to position (line and column) of mark: ``` `a ```   
@@ -68,7 +71,8 @@ Join lines: ```J```
 
 Search forward/backward: ```/<string>, ?<string>```, repeat search in same direction ```n, N```  
 Replace all/confirm on current line: ```:s/string/replacement/[g,c]```  
-Replace all/confirm in all lines: ```:%s/string/replacement/[g,c]```  
+Replace all/confirm between lines ```m``` and ```n```:  ```:<m>,<n>s/string/replacement/[g,c]```  
+Replace all/confirm in file: ```:%s/string/replacement/[g,c]```  
 
 ## Files
 
@@ -76,14 +80,15 @@ Save file (as): ```:w [filename]```, current file if no name given
 Read file after line: ```:r <filename>```  
 Read program output: ```:r !<program>```  
 Edit file: ```:e <filename>```  
-Next/previous file: ```:n, :p```  
+Next/previous file: ```:n, :N```  
+List open files: ```:buffers```, you can then type ```:buffer <n>``` or ```:b <n>``` to switch to a file  
 Close file: ```:bd```  
 
 ## Windows/Tabs
 
 New empty window: ```<C-w>n :new```  
 Split window horizontally/vertically (editing current buffer, if you want to open a different file specify it as parameters to ```:split :vsplit``` command): ```<C-w>s,v``` or ```:split,:vsplit```  
-Close current/other window(s): ```<C-w>c,o```  
+Close current/other window(s): ```<C-w>c,o``` or ```:q```  
 Go to next/previous window: ```<C-w>w,p```   
 Go to window left/down/above/right: ```<C-w> <movement>```  
 
@@ -111,3 +116,8 @@ Exit discarding change: ```!q```
 
 Show line numbers: ```:set number```  
 Turn on/off Hex mode: ```:%!xxd```, ```:%!xxd -r```  
+
+## Editor Command Completion
+
+Show matching commands: Press ```Ctrl-D``` after typing first few letters, e.g., ```:e<Ctrl-D>``` will show all editor command starting with ```e```.  
+Complete command: Press ```TAB``` after typing first few letter, e.g., ```:e<TAB>``` will complete the command name to ```edit```. It is especially useful for  ```:help```.  
